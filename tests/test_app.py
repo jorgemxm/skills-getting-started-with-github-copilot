@@ -29,6 +29,30 @@ def test_unregister_nonexistent_activity():
     assert response.status_code == 404
 
 
+def test_get_activity_success():
+    # Arrange: pick a valid activity and record expected data
+    activity = "Chess Club"
+    expected = activities[activity].copy()
+
+    # Act: request the specific activity
+    response = client.get(f"/activities/{activity}")
+
+    # Assert: server returns 200 and the payload matches
+    assert response.status_code == 200
+    assert response.json() == expected
+
+
+def test_get_activity_not_found():
+    # Arrange: use an activity name that doesn't exist
+    activity = "Nonexistent Club"
+
+    # Act: attempt to retrieve it
+    response = client.get(f"/activities/{activity}")
+
+    # Assert: the API responds with 404
+    assert response.status_code == 404
+
+
 def test_unregister_not_signed_up():
     activity = "Gym Class"
     email = "nobody@mergington.edu"
